@@ -125,6 +125,7 @@ async function username(req, res) {
         const rating = calculateRating(totalStars, totalCommits, totalPRs, totalIssues, contributedTo);
 
         res.setHeader('Content-Type', 'image/svg+xml');
+        console.log(user);
         return res.render('stats.svg.ejs', {
             login: user.login,
             name: user.name,

@@ -1,44 +1,128 @@
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="195" viewBox="0 0 450 195" fill="none" role="img" aria-labelledby="descId">
+    <title id="titleId"><%= name %>'s GitHub Stats, Rank: <%= rating %></title>
+    <desc id="descId">Total Stars Earned: <%= totalStars %>, Total Commits in <%= new Date().getFullYear() %> : <%= totalCommits %>, Total PRs: <%= totalPRs %>, Total Issues: <%= totalIssues %>, Contributed to (last year): <%= contributedTo %></desc>
     <style>
-        .title { font: bold 24px sans-serif; fill: #333; }
-        .label { font: 14px sans-serif; fill: #555; }
-        .value { font: bold 14px sans-serif; fill: #000; }
-        .card { fill: #fff; stroke: #ddd; stroke-width: 1; rx: 10; ry: 10; }
-        .avatar { clip-path: circle(50%); }
-        .rating-circle { fill: none; stroke-width: 5; }
-        .rating-text { font: bold 24px sans-serif; text-anchor: middle; dominant-baseline: middle; }
+        .header {
+            font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
+            fill: #2f80ed;
+            animation: fadeInAnimation 0.8s ease-in-out forwards;
+        }
+        @supports(-moz-appearance: auto) {
+            .header { font-size: 15.5px; }
+        }
+        .stat {
+            font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; fill: #434d58;
+        }
+        @supports(-moz-appearance: auto) {
+            .stat { font-size:12px; }
+        }
+        .stagger {
+            opacity: 0;
+            animation: fadeInAnimation 0.3s ease-in-out forwards;
+        }
+        .rank-text {
+            font: 800 24px 'Segoe UI', Ubuntu, Sans-Serif;
+            animation: scaleInAnimation 0.3s ease-in-out forwards;
+        }
+        .rank-percentile-header {
+            font-size: 14px;
+        }
+        .rank-percentile-text {
+            font-size: 16px;
+        }
+        .not_bold { font-weight: 400 }
+        .bold { font-weight: 700 }
+        .icon {
+            fill: #4c71f2;
+            display: none;
+        }
+        .rank-circle-rim {
+            stroke: #2f80ed;
+            fill: none;
+            stroke-width: 6;
+            opacity: 0.2;
+        }
+        .rank-circle {
+            stroke-dasharray: 250;
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+            opacity: 0.8;
+            transform-origin: -10px 8px;
+            transform: rotate(-90deg);
+            animation: rankAnimation 1s forwards ease-in-out;
+        }
+        @keyframes rankAnimation {
+            from {
+                stroke-dashoffset: 251.32741228718345;
+            }
+            to {
+                stroke-dashoffset: 207.49080800748257;
+            }
+        }
+        @keyframes scaleInAnimation {
+            from {
+                transform: translate(-5px, 5px) scale(0);
+            }
+            to {
+                transform: translate(-5px, 5px) scale(1);
+            }
+        }
+        @keyframes fadeInAnimation {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
-
-    <rect class="card" />
-    <text x="40" y="60" class="title">GitHub Statistics for <%= login %></text>
-    <image x="40" y="80" width="80" height="80" href="<%= avatarUrl %>" class="avatar" />
-
-    <% let yOffset = 100; %>
-    <text x="140" y="<%= yOffset - 10 %>" class="label">Total Stars:</text>
-    <text x="240" y="<%= yOffset - 10 %>" class="value"><%= totalStars %></text>
-    <text x="140" y="<%= yOffset + 10 %>" class="label">Total Commits:</text>
-    <text x="240" y="<%= yOffset + 10 %>" class="value"><%= totalCommits %></text>
-    <text x="140" y="<%= yOffset + 30 %>" class="label">Total PRs:</text>
-    <text x="240" y="<%= yOffset + 30 %>" class="value"><%= totalPRs %></text>
-    <text x="140" y="<%= yOffset + 50 %>" class="label">Total Issues:</text>
-    <text x="240" y="<%= yOffset + 50 %>" class="value"><%= totalIssues %></text>
-    <text x="140" y="<%= yOffset + 70 %>" class="label">Contributed To:</text>
-    <text x="240" y="<%= yOffset + 70 %>" class="value"><%= contributedTo %></text>
-
-    <!-- Rating Circle -->
-    <circle cx="360" cy="<%= yOffset + 25 %>" r="40" class="rating-circle" style="stroke: <%= getRatingColor(rating) %>;" />
-    <text x="360" y="<%= yOffset + 25 %>" class="rating-text" style="fill: <%= getRatingColor(rating) %>;"><%= rating %></text>
-
-    <script type="text/javascript">
-        const svg = document.querySelector('svg');
-        const card = document.querySelector('.card');
-
-        const bbox = svg.getBBox();
-        svg.setAttribute('width', bbox.width + 60);
-        svg.setAttribute('height', bbox.height + 60);
-        card.setAttribute('x', 20);
-        card.setAttribute('y', 20);
-        card.setAttribute('width', bbox.width + 40);
-        card.setAttribute('height', bbox.height + 40);
-    </script>
+    <rect data-testid="card-bg" x="0.5" y="0.5" rx="4.5" height="99%" stroke="#e4e2e2" width="449" fill="#fffefe" stroke-opacity="1"/>
+    <g data-testid="card-title" transform="translate(25, 35)">
+        <g transform="translate(0, 0)">
+            <text x="0" y="0" class="header" data-testid="header"><%= name %>'s GitHub Stats</text>
+        </g>
+    </g>
+    <g data-testid="main-card-body" transform="translate(0, 55)">
+        <g data-testid="rank-circle" transform="translate(365, 47.5)">
+            <circle class="rank-circle-rim" cx="-10" cy="8" r="40"/>
+            <circle class="rank-circle" cx="-10" cy="8" r="40" stroke="<%= getRatingColor(rating) %>"/>
+            <g class="rank-text" fill="<%= getRatingColor(rating) %>">
+                <text x="-5" y="3" alignment-baseline="central" dominant-baseline="central" text-anchor="middle" data-testid="level-rank-icon"><%= rating %></text>
+            </g>
+        </g>
+        <svg x="0" y="0">
+            <g transform="translate(0, 0)">
+                <g class="stagger" style="animation-delay: 450ms" transform="translate(25, 0)">
+                    <text class="stat bold" y="12.5">Total Stars Earned:</text>
+                    <text class="stat bold" x="199.01" y="12.5" data-testid="stars"><%= totalStars %></text>
+                </g>
+            </g>
+            <g transform="translate(0, 25)">
+                <g class="stagger" style="animation-delay: 600ms" transform="translate(25, 0)">
+                    <text class="stat bold" y="12.5">Total Commits (<%= new Date().getFullYear() %>):</text>
+                    <text class="stat bold" x="199.01" y="12.5" data-testid="commits"><%= totalCommits %></text>
+                </g>
+            </g>
+            <g transform="translate(0, 50)">
+                <g class="stagger" style="animation-delay: 750ms" transform="translate(25, 0)">
+                    <text class="stat bold" y="12.5">Total PRs:</text>
+                    <text class="stat bold" x="199.01" y="12.5" data-testid="prs"><%= totalPRs %></text>
+                </g>
+            </g>
+            <g transform="translate(0, 75)">
+                <g class="stagger" style="animation-delay: 900ms" transform="translate(25, 0)">
+                    <text class="stat bold" y="12.5">Total Issues:</text>
+                    <text class="stat bold" x="199.01" y="12.5" data-testid="issues"><%= totalIssues %></text>
+                </g>
+            </g>
+            <g transform="translate(0, 100)">
+                <g class="stagger" style="animation-delay: 1050ms" transform="translate(25, 0)">
+                    <text class="stat bold" y="12.5">Contributed to (last year):</text>
+                    <text class="stat bold" x="199.01" y="12.5" data-testid="contribs"><%= contributedTo %></text>
+                </g>
+            </g>
+        </svg>
+    </g>
+    <script xmlns=""/>
 </svg>
