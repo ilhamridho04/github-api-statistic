@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .title { font: bold 24px sans-serif; fill: #333; }
+        .label { font: 14px sans-serif; fill: #555; }
+        .value { font: bold 14px sans-serif; fill: #000; }
+        .card { fill: #fff; stroke: #ddd; stroke-width: 1; rx: 10; ry: 10; }
+        .avatar { clip-path: circle(50%); }
+        .rating-circle { fill: none; stroke-width: 5; }
+        .rating-text { font: bold 24px sans-serif; text-anchor: middle; dominant-baseline: middle; }
+    </style>
+
+    <rect class="card" />
+    <text x="40" y="60" class="title">GitHub Statistics for <%= login %></text>
+    <image x="40" y="80" width="80" height="80" href="<%= avatarUrl %>" class="avatar" />
+
+    <% let yOffset = 100; %>
+    <text x="140" y="<%= yOffset - 10 %>" class="label">Total Stars:</text>
+    <text x="240" y="<%= yOffset - 10 %>" class="value"><%= totalStars %></text>
+    <text x="140" y="<%= yOffset + 10 %>" class="label">Total Commits:</text>
+    <text x="240" y="<%= yOffset + 10 %>" class="value"><%= totalCommits %></text>
+    <text x="140" y="<%= yOffset + 30 %>" class="label">Total PRs:</text>
+    <text x="240" y="<%= yOffset + 30 %>" class="value"><%= totalPRs %></text>
+    <text x="140" y="<%= yOffset + 50 %>" class="label">Total Issues:</text>
+    <text x="240" y="<%= yOffset + 50 %>" class="value"><%= totalIssues %></text>
+    <text x="140" y="<%= yOffset + 70 %>" class="label">Contributed To:</text>
+    <text x="240" y="<%= yOffset + 70 %>" class="value"><%= contributedTo %></text>
+
+    <!-- Rating Circle -->
+    <circle cx="360" cy="<%= yOffset + 25 %>" r="40" class="rating-circle" style="stroke: <%= getRatingColor(rating) %>;" />
+    <text x="360" y="<%= yOffset + 25 %>" class="rating-text" style="fill: <%= getRatingColor(rating) %>;"><%= rating %></text>
+
+    <script type="text/javascript">
+        const svg = document.querySelector('svg');
+        const card = document.querySelector('.card');
+
+        const bbox = svg.getBBox();
+        svg.setAttribute('width', bbox.width + 60);
+        svg.setAttribute('height', bbox.height + 60);
+        card.setAttribute('x', 20);
+        card.setAttribute('y', 20);
+        card.setAttribute('width', bbox.width + 40);
+        card.setAttribute('height', bbox.height + 40);
+    </script>
+</svg>
