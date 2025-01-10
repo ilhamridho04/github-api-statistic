@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="450" height="195" viewBox="0 0 450 195" fill="none" role="img" aria-labelledby="descId">
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="215" viewBox="0 0 450 215" fill="none" role="img" aria-labelledby="descId">
     <title id="titleId"><%= name %>'s GitHub Stats, Rank: <%= rating %></title>
     <desc id="descId">Total Stars Earned: <%= totalStars %>, Total Commits in <%= new Date().getFullYear() %> : <%= totalCommits %>, Total PRs: <%= totalPRs %>, Total Issues: <%= totalIssues %>, Contributed to (last year): <%= contributedTo %></desc>
     <style>
@@ -83,8 +83,8 @@
             <text x="0" y="0" class="header" data-testid="header"><%= name %>'s GitHub Stats</text>
         </g>
     </g>
-    <g data-testid="main-card-body" transform="translate(0, 55)">
-        <g data-testid="rank-circle" transform="translate(365, 47.5)">
+    <g data-testid="main-card-body" transform="translate(0, 50)">
+        <g data-testid="rank-circle" transform="translate(365, 60)">
             <circle class="rank-circle-rim" cx="-10" cy="8" r="40"/>
             <circle class="rank-circle" cx="-10" cy="8" r="40" stroke="<%= getRatingColor(rating) %>"/>
             <g class="rank-text" fill="<%= getRatingColor(rating) %>">
@@ -94,29 +94,35 @@
         <svg x="0" y="0">
             <g transform="translate(0, 0)">
                 <g class="stagger" style="animation-delay: 450ms" transform="translate(25, 0)">
+                    <text class="stat bold" y="12.5">Total Repositories:</text>
+                    <text class="stat bold" x="199.01" y="12.5" data-testid="stars"><%= totalRepos %></text>
+                </g>
+            </g>
+            <g transform="translate(0, 25)">
+                <g class="stagger" style="animation-delay: 450ms" transform="translate(25, 0)">
                     <text class="stat bold" y="12.5">Total Stars Earned:</text>
                     <text class="stat bold" x="199.01" y="12.5" data-testid="stars"><%= totalStars %></text>
                 </g>
             </g>
-            <g transform="translate(0, 25)">
+            <g transform="translate(0, 50)">
                 <g class="stagger" style="animation-delay: 600ms" transform="translate(25, 0)">
                     <text class="stat bold" y="12.5">Total Commits (<%= new Date().getFullYear() %>):</text>
                     <text class="stat bold" x="199.01" y="12.5" data-testid="commits"><%= totalCommits %></text>
                 </g>
             </g>
-            <g transform="translate(0, 50)">
+            <g transform="translate(0, 75)">
                 <g class="stagger" style="animation-delay: 750ms" transform="translate(25, 0)">
                     <text class="stat bold" y="12.5">Total PRs:</text>
                     <text class="stat bold" x="199.01" y="12.5" data-testid="prs"><%= totalPRs %></text>
                 </g>
             </g>
-            <g transform="translate(0, 75)">
+            <g transform="translate(0, 100)">
                 <g class="stagger" style="animation-delay: 900ms" transform="translate(25, 0)">
                     <text class="stat bold" y="12.5">Total Issues:</text>
                     <text class="stat bold" x="199.01" y="12.5" data-testid="issues"><%= totalIssues %></text>
                 </g>
             </g>
-            <g transform="translate(0, 100)">
+            <g transform="translate(0, 125)">
                 <g class="stagger" style="animation-delay: 1050ms" transform="translate(25, 0)">
                     <text class="stat bold" y="12.5">Contributed to (last year):</text>
                     <text class="stat bold" x="199.01" y="12.5" data-testid="contribs"><%= contributedTo %></text>

@@ -26,6 +26,27 @@ function getRatingColor(rating) {
     }
 }
 
+async function fetchAllRepos(headers, username = '') {
+    let page = 1;
+    let repos = [];
+    let hasMore = true;
+
+    while (hasMore) {
+        let url;
+        if (username) {
+            url = `https://api.github.com/users/${username}/repos?per_page=100&page=${page}`;
+        } else {
+            url = `https://api.github.com/user/repos?per_page=100&page=${page}`;
+        }
+        const response = await axios.get(url, { headers });
+        repos = repos.concat(response.data);
+        hasMore = response.data.length === 100;
+        page++;
+    }
+
+    return repos;
+}
+
 async function index(req, res) {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     const headers = {
@@ -38,9 +59,9 @@ async function index(req, res) {
         const userResponse = await axios.get('https://api.github.com/user', { headers });
         const user = userResponse.data;
 
-        // Fetch repositories data
-        const reposResponse = await axios.get('https://api.github.com/user/repos?per_page=100', { headers });
-        const repos = reposResponse.data;
+        // Fetch all repositories
+        const repos = await fetchAllRepos(headers);
+        const totalRepos = repos.length;
 
         // Calculate total stars
         const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
@@ -76,11 +97,11 @@ async function index(req, res) {
             totalIssues,
             contributedTo,
             rating,
+            totalRepos,
             getRatingColor
         });
     } catch (error) {
-        console.error('Error fetching data from GitHub API:', error);
-        throw new Error('GitHub API request failed');
+        return res.status(500).send('Error fetching data from GitHub API');
     }
 }
 
@@ -91,16 +112,16 @@ async function username(req, res) {
         'Accept': 'application/vnd.github.v3+json'
     };
 
-    const username = req.params.username || 'default-username'; // Ganti 'default-username' dengan username default Anda
+    const username = req.params.username || 'default-username'; // Replace 'default-username' with your default username
 
     try {
         // Fetch user data
         const userResponse = await axios.get(`https://api.github.com/users/${username}`, { headers });
         const user = userResponse.data;
 
-        // Fetch repositories data
-        const reposResponse = await axios.get(`https://api.github.com/users/${username}/repos?per_page=100`, { headers });
-        const repos = reposResponse.data;
+        // Fetch all repositories
+        const repos = await fetchAllRepos(headers, username);
+        const totalRepos = repos.length;
 
         // Calculate total stars
         const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
@@ -136,11 +157,11 @@ async function username(req, res) {
             totalIssues,
             contributedTo,
             rating,
+            totalRepos,
             getRatingColor
         });
     } catch (error) {
-        console.error('Error fetching data from GitHub API:', error);
-        throw new Error('GitHub API request failed');
+        return res.status(500).send('Error fetching data from GitHub API');
     }
 }
 
